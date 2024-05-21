@@ -1,0 +1,20 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Plant Image</title>
+</head>
+<body>
+    <h1>Upload a Plant Image to Detect Disease</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    {% if class_id is not None %}
+        <h2>Prediction Result</h2>
+        <p>Class ID: {{ class_id }}</p>
+    {% endif %}
+</body>
+</html>

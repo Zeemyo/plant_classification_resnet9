@@ -1,0 +1,111 @@
+
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    padding-bottom: inherit;
+}
+
+.navbar {
+    height: 2.5cm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #5f87de;
+    padding: 0px 30px;
+}
+
+.name {
+    margin-right: auto;
+    color: white;
+    font-size: 1.2cm;
+}
+
+.navbar a {
+    font-size: x-large;
+    font-weight: bolder;
+    color: white;
+    text-decoration: none;
+    padding: 10px 16px; /* Adjust padding for horizontal spacing */
+    transition: color 0.3s; /* Add smooth transition for color change */
+}
+
+/* Change text color on hover */
+.navbar a:hover, .dropdown:hover .dropbtn {
+    border-radius: 5px;
+    color: #ffd700; 
+}
+
+.dropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.dropdown .dropbtn {
+    font-size: 16px;    
+    border: none;
+    outline: none;
+    color: white;
+    background-color: inherit;
+    margin: 0;
+    padding: 10px 12px; /* Adjust padding for dropdown button */
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    font-weight: 300;
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: dotted;
+    display: block;
+    text-align: left;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+    animation: glowing 2s infinite;
+    margin-bottom: 10px;
+}
+
+.logo img {
+    width: 175px;
+    height: auto;
+    margin-right: 10px;
+    margin-top: 10px;
+    transition: transform 0.3s;
+    filter: drop-shadow(0 0 10px rgba(255, 254, 246, 0.771)); /* Add glow using filter */
+}
+
+/* Scale down the logo slightly on hover */
+.logo img:hover {
+    transform: scale(1.1);
+}
+
+@keyframes glowing {
+    0%, 100% {
+        filter: drop-shadow(0 0 10px #b6b195); /* Initial and final glow color and size */
+    }
+    50% {
+        filter: drop-shadow(0 0 20px #ffd9008f); /* Mid glow color and size */
+    }
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}

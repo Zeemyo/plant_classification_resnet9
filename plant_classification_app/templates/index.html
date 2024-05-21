@@ -1,0 +1,57 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="{% static 'resources/css/styles-index.css' %}">
+                    <title>QA</title>
+                </head>
+
+                <body>
+                    {% include 'navbar.html' %}
+                    <div class="wrapper">
+                        <img
+                            src="{% static 'resources/images/vector-1.png' %}"
+                            alt="Vector 1"
+                            class="vector-1">
+                            <img
+                                src="{% static 'resources/images/vector-2.png' %}"
+                                alt="Vector 2"
+                                class="vector-2"></div>
+                            <div class="container">
+                                <div class="hero">
+                                    <h1>Selamat Datang di Query Analyzer!</h1>
+                                    <p>Kalkulasikan Kompleksitas dan Efektifitas Query anda.</p>
+                                </div>
+
+                                <div class="cta">
+                                    <a href="/analyzer/">Analisis File Query mu</a>
+                                    <hr class="divider"></div>
+                                </div>
+                                <section id="About" class="about">
+                                    <div class="container-about">
+                                        <h2>Tentang Tool Query Analyzer</h2>
+                                        <p>Query Analyzer adalah platform yang bertujuan untuk membantu dalam
+                                            menganalisis beberapa jenis query database. Dengan tools ini, Anda dapat dengan
+                                            mudah menganalisis file query SQL Anda dan mendapatkan wawasan berharga tentang
+                                            performa kueri Anda. tools ini masih dalam pengembangan, mungkin ada beberapa
+                                            hal yang masih belum lengkap dalam tool analisa efektifitas dan compleksitas
+                                            query ini.</p>
+                                    </div>
+                                </section>
+                                <div class="wrapper">
+                                    <img
+                                        src="{% static 'resources/images/vector-3.png' %}"
+                                        alt="Vector 3"
+                                        class="vector-3">
+                                        <img
+                                            src="{% static 'resources/images/vector-4.png' %}"
+                                            alt="Vector 4"
+                                            class="vector-4"></div>
+                                        <footer>
+                                            <p>Hak Cipta &copy; 2023 Query Analyzer. All rights reserved.</p>
+                                        </footer>
+                                    </body>
+                                </html>

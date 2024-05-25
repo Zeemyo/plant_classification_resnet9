@@ -1,0 +1,16 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plant Classification</title>
+</head>
+<body>
+    <h1>Upload Leaf Image for Classification</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="leaf_image" accept="image/*" required>
+        <button type="submit">Upload and Classify</button>
+    </form>
+</body>
+</html>

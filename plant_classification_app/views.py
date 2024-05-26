@@ -9,18 +9,29 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-# Inisialisasi model
-num_classes = 14  # Sesuaikan dengan jumlah kelas yang sesuai
+# Inisialisasi model dengan jumlah kelas yang sesuai
+num_classes = 10  # Sesuaikan dengan jumlah kelas yang sesuai
 model = ResNet9(num_classes=num_classes)
 
-# Memuat state dictionary ke model
-state_dict = torch.load(r'C:\Main storage\Kuliah\Semester 8\Aplikasi Plant Leaf Detection\plant-disease-model-all.pth', map_location=torch.device('cpu'))
-model.load_state_dict(state_dict)
+# Memuat state dictionary dari file
+state_dict = torch.load(r'C:\Main storage\Kuliah\Semester 8\Aplikasi Plant Leaf Detection\tomato-disease-model.pth', map_location=torch.device('cpu'))
+
+# Menyesuaikan nama lapisan jika diperlukan
+new_state_dict = {}
+for k, v in state_dict.items():
+    # Ganti nama lapisan jika ada perbedaan
+    new_key = k.replace("res1.0.0", "res1.0").replace("res1.0.1", "res1.1").replace("res1.1.0", "res1.1").replace("res1.1.1", "res1.1").replace("res2.0.0", "res2.0").replace("res2.0.1", "res2.1").replace("res2.1.0", "res2.1").replace("res2.1.1", "res2.1")
+    new_state_dict[new_key] = v
+
+# Memuat state dictionary yang disesuaikan ke model
+model.load_state_dict(new_state_dict)
+
+# Menandakan bahwa model dalam mode evaluasi
 model.eval()
 
 # Definisikan transformasi data
 transform = transforms.Compose([
-    transforms.Resize((224, 224)),
+    transforms.Resize((256, 256)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
@@ -32,6 +43,8 @@ def predict(image, model, transform):
         output = model(image_tensor)
         probabilities = torch.nn.functional.softmax(output, dim=1)[0]
         predicted_class = torch.argmax(probabilities).item()
+    # Konversi tensor probabilitas ke numpy array dan ke list agar mudah dibaca
+    probabilities = probabilities.numpy().tolist()
     return predicted_class, probabilities
 
 # Fungsi untuk membuat visualisasi
@@ -57,22 +70,21 @@ def index(request):
         image = Image.open(leaf_image).convert('RGB')
         predicted_class, probabilities = predict(image, model, transform)
         visualization_path = create_visualization(image, predicted_class)
-
-        print(f"ini predicted {probabilities}")
         
-        # Informasi akurasi dan kategori
-        accuracy = 0.95  # Contoh akurasi, sesuaikan dengan akurasi model Anda
-        categories = ['Category 1', 'Category 2', 'Category 3', 'Category 4', 
-                      'Category 5', 'Category 6', 'Category 7', 'Category 8', 
-                      'Category 9', 'Category 10', 'Category 11', 'Category 12', 
-                      'Category 13', 'Category 14']  # Sesuaikan dengan kategori daun Anda
+        # Informasi kategori
+        categories = ['Tomato___Bacterial_spot', 'Tomato___Early_blight', 'Tomato___healthy', 'Tomato___Late_blight', 
+                      'Tomato___Leaf_Mold', 'Tomato___Septoria_leaf_spot', 'Tomato___Spider_mites Two-spotted_spider_mite', 
+                      'Tomato___Target_Spot', 'Tomato___Tomato_mosaic_virus', 'Tomato___Tomato_Yellow_Leaf_Curl_Virus']  # Sesuaikan dengan kategori daun Anda
         category = categories[predicted_class]
         
         return render(request, 'plant_classification_app/result.html', {
             'predicted_class': predicted_class,
             'probabilities': probabilities,
             'visualization_path': visualization_path,
-            'accuracy': accuracy,
-            'category': category
+            'accuracy': 'N/A',  # Akurasi tidak tersedia karena kita tidak melakukan pelatihan
+            'category': category,
+            'categories': categories,  # Tambahkan ini untuk template
+            'accuracy_graph': 'static/accuracy.png',  # Pastikan file ini ada
+            'loss_graph': 'static/loss.png'  # Pastikan file ini ada
         })
     return render(request, 'plant_classification_app/index.html')

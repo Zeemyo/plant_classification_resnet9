@@ -1,22 +1,23 @@
 import torch
 from torch.utils.data import DataLoader
-from sklearn.metrics import accuracy_score
 from torchvision import datasets, transforms
+import torch.nn.functional as F
+import torch.optim as optim
+from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
-from .models import ResNet9  # Sesuaikan dengan nama aplikasi Anda
+from models import ResNet9
 
 # Definisikan transformasi data
 transform = transforms.Compose([
-    transforms.Resize((224, 224)),
+    transforms.Resize((255, 255)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
 
 # Load datasets
-train_dataset = datasets.ImageFolder('path_to_train_data', transform=transform)
-val_dataset = datasets.ImageFolder('path_to_val_data', transform=transform)
+train_dataset = datasets.ImageFolder('C:/Main storage/Kuliah/Semester 8/Aplikasi Plant Leaf Detection/New Plant Diseases Dataset/train', transform=transform)
+val_dataset = datasets.ImageFolder('C:/Main storage/Kuliah/Semester 8/Aplikasi Plant Leaf Detection/New Plant Diseases Dataset/valid', transform=transform)
 
-# Create dataloaders
 train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
 
@@ -24,9 +25,9 @@ val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
 model = ResNet9(num_classes=38)
 
 # Fungsi pelatihan
-def train_model(model, train_loader, val_loader, num_epochs=10):
+def train_model(model, train_loader, val_loader, num_epochs=100):
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
     best_accuracy = 0.0
     train_losses = []
     val_losses = []
@@ -54,7 +55,6 @@ def train_model(model, train_loader, val_loader, num_epochs=10):
         train_losses.append(train_loss)
         train_accuracies.append(train_accuracy)
 
-        # Evaluasi akurasi pada data validasi
         model.eval()
         running_loss = 0.0
         correct = 0
@@ -79,15 +79,12 @@ def train_model(model, train_loader, val_loader, num_epochs=10):
 
         if val_accuracy > best_accuracy:
             best_accuracy = val_accuracy
-            # Simpan model terbaik
             torch.save(model.state_dict(), 'best_model.pth')
-            # Simpan akurasi terbaik
             with open('best_accuracy.txt', 'w') as f:
                 f.write(str(best_accuracy))
 
         print(f'Epoch {epoch+1}/{num_epochs}, Training Loss: {train_loss:.4f}, Validation Loss: {val_loss:.4f}, Training Accuracy: {train_accuracy:.4f}, Validation Accuracy: {val_accuracy:.4f}')
 
-    # Simpan grafik akurasi dan loss
     epochs = range(1, num_epochs + 1)
     plt.figure()
     plt.plot(epochs, train_accuracies, 'b', label='Training accuracy')

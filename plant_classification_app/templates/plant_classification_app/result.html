@@ -1,28 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Plant Classification Result</title>
+    <title>Classification Result</title>
 </head>
 <body>
     <h1>Classification Result</h1>
     <p>Predicted Class: {{ predicted_class }}</p>
     <p>Category: {{ category }}</p>
-    <p>Accuracy: {{ accuracy }}</p>
+    <img src="{{ visualization_path }}" alt="Visualization">
     <h2>Probabilities:</h2>
     <ul>
         {% for i in probabilities %}
-            <li>Class {{ forloop.counter0 }}: {{ i }}</li>
+            <li>Class {{ forloop.counter0 }} ({{ categories|slice:":1" }}): {{ i|floatformat:4 }}</li>
         {% endfor %}
     </ul>
-    <h2>Visualization:</h2>
-    <img src="/{{ visualization_path }}" alt="Visualization">
-    
-    <h2>Accuracy Graph:</h2>
-    <img src="/{{ accuracy_graph }}" alt="Accuracy Graph">
-    
-    <h2>Loss Graph:</h2>
-    <img src="/{{ loss_graph }}" alt="Loss Graph">
-    
-    <a href="/">Upload another image</a>
+    <p><a href="/">Upload another image</a></p>
 </body>
 </html>
